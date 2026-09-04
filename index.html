@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LemurNet</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Kontener udający ekran telefonu */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            border-left: 1px solid #334155;
+            border-right: 1px solid #334155;
+            position: relative;
+        }
+
+        /* Górny pasek aplikacji */
+        header {
+            padding: 16px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            font-weight: 800;
+        }
+
+        /* Sekcja tworzenia posta */
+        .create-post {
+            padding: 16px;
+            background-color: var(--card-bg);
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 70px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: var(--text-color);
+            padding: 10px;
+            resize: none;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        .post-btn {
+            margin-top: 8px;
+            background-color: var(--accent-color);
+            color: #0284c7;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            float: right;
+        }
+
+        /* Główny feed z postami */
+        .feed {
+            flex: 1;
+            padding: 8px 16px 80px 16px;
+        }
+
+        .post-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #334155;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0f172a;
+            margin-right: 10px;
+        }
+
+        .user-info .username {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .user-info .time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .post-content {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* Dolne menu nawigacyjne */
+        nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--card-bg);
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+        }
+
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <h1>LemurNet</h1>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">v0.1 Alpha</span>
+        </header>
+
+        <!-- Formularz dodawania wpisu -->
+        <div class="create-post">
+            <textarea id="postInput" placeholder="Co tam u Ciebie słychać?"></textarea>
+            <button class="post-btn" onclick="addPost()">Opublikuj</button>
+            <div style="clear: both;"></div>
+        </div>
+
+        <!-- Główna lista wpisów -->
+        <div class="feed" id="postFeed">
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="avatar">L</div>
+                    <div class="user-info">
+                        <div class="username">Lemurovaty</div>
+                        <div class="time">przed chwilą</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Witaj w testowej wersji LemurNet! Baza danych i logika w Pythonie będą podpięte już wkrótce. 🚀
+                </div>
+            </div>
+        </div>
+
+        <!-- Dolny pasek nawigacyjny -->
+        <nav>
+            <a href="#" class="nav-item active">🏠 Home</a>
+            <a href="#" class="nav-item">💬 Czat</a>
+            <a href="#" class="nav-item">👤 Profil</a>
+        </nav>
+    </div>
+
+    <script>
+        function addPost() {
+            const input = document.getElementById('postInput');
+            const text = input.value.trim();
+
+            if (text === '') return;
+
+            const feed = document.getElementById('postFeed');
+            
+            // Tworzenie nowej karty posta w DOM
+            const newPost = document.createElement('div');
+            newPost.className = 'post-card';
+            newPost.innerHTML = `
+                <div class="post-header">
+                    <div class="avatar">TY</div>
+                    <div class="user-info">
+                        <div class="username">Ty</div>
+                        <div class="time">przed chwilą</div>
+                    </div>
+                </div>
+                <div class="post-content">${text}</div>
+            `;
+
+            // Dodanie posta na górę listy
+            feed.insertBefore(newPost, feed.firstChild);
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
