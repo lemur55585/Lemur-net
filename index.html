@@ -11,6 +11,7 @@
             --accent-color: #38bdf8;
             --text-color: #f8fafc;
             --text-muted: #94a3b8;
+            --border-color: #334155;
         }
 
         * {
@@ -28,7 +29,7 @@
             min-height: 100vh;
         }
 
-        /* Kontener udający ekran telefonu */
+        /* Domyślny kontener na pion (telefon) */
         .app-container {
             width: 100%;
             max-width: 480px;
@@ -36,16 +37,16 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            border-left: 1px solid #334155;
-            border-right: 1px solid #334155;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
             position: relative;
+            transition: all 0.3s ease;
         }
 
-        /* Górny pasek aplikacji */
         header {
             padding: 16px;
             background-color: var(--card-bg);
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -60,18 +61,23 @@
             font-weight: 800;
         }
 
-        /* Sekcja tworzenia posta */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
         .create-post {
             padding: 16px;
             background-color: var(--card-bg);
-            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         textarea {
             width: 100%;
             height: 70px;
-            background-color: #0f172a;
-            border: 1px solid #334155;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             color: var(--text-color);
             padding: 10px;
@@ -95,10 +101,9 @@
             float: right;
         }
 
-        /* Główny feed z postami */
         .feed {
             flex: 1;
-            padding: 8px 16px 80px 16px;
+            padding: 12px 16px 80px 16px;
         }
 
         .post-card {
@@ -106,7 +111,7 @@
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 12px;
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
         }
 
         .post-header {
@@ -143,30 +148,77 @@
             line-height: 1.4;
         }
 
-        /* Dolne menu nawigacyjne */
+        /* Dolny pasek nawigacji dla pionu */
         nav {
             position: fixed;
             bottom: 0;
             width: 100%;
             max-width: 480px;
             background-color: var(--card-bg);
-            border-top: 1px solid #334155;
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
             padding: 12px 0;
+            z-index: 10;
         }
 
         .nav-item {
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 4px;
         }
 
         .nav-item.active {
             color: var(--accent-color);
+        }
+
+        /* ========================================================== */
+        /* TRYB POZIOMY / EKRANY KRAJOBRAZOWE (ORIENTACJA POZIOMA)     */
+        /* ========================================================== */
+        @media (min-width: 768px) or (orientation: landscape) and (max-height: 500px) {
+            .app-container {
+                max-width: 900px;
+                border: 1px solid var(--border-color);
+                border-top: none;
+            }
+
+            .main-content {
+                flex-direction: row;
+            }
+
+            /* Lewa kolumna: Formularz dodawania */
+            .create-post {
+                width: 320px;
+                border-right: 1px solid var(--border-color);
+                border-bottom: none;
+                position: sticky;
+                top: 57px;
+                height: fit-content;
+            }
+
+            /* Prawa kolumna: Feed z wpisami */
+            .feed {
+                padding-bottom: 24px;
+            }
+
+            /* Ukrywamy dolną nawigację w poziomie, przenosimy menu na nagłówek */
+            nav {
+                position: static;
+                width: auto;
+                background-color: transparent;
+                border: none;
+                padding: 0;
+                gap: 20px;
+            }
+
+            .nav-item {
+                flex-direction: row;
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>
@@ -175,38 +227,38 @@
     <div class="app-container">
         <header>
             <h1>LemurNet</h1>
-            <span style="font-size: 0.8rem; color: var(--text-muted);">v0.1 Alpha</span>
+            <!-- W trybie poziomym nawigacja przechodzi do nagłówka -->
+            <nav id="navbar">
+                <a href="#" class="nav-item active">🏠 <span>Home</span></a>
+                <a href="#" class="nav-item">💬 <span>Czat</span></a>
+                <a href="#" class="nav-item">👤 <span>Profil</span></a>
+            </nav>
         </header>
 
-        <!-- Formularz dodawania wpisu -->
-        <div class="create-post">
-            <textarea id="postInput" placeholder="Co tam u Ciebie słychać?"></textarea>
-            <button class="post-btn" onclick="addPost()">Opublikuj</button>
-            <div style="clear: both;"></div>
-        </div>
+        <div class="main-content">
+            <!-- Tworzenie posta (po lewej w poziomie, na górze w pionie) -->
+            <div class="create-post">
+                <textarea id="postInput" placeholder="Co tam słychać w LemurNet?"></textarea>
+                <button class="post-btn" onclick="addPost()">Opublikuj</button>
+                <div style="clear: both;"></div>
+            </div>
 
-        <!-- Główna lista wpisów -->
-        <div class="feed" id="postFeed">
-            <div class="post-card">
-                <div class="post-header">
-                    <div class="avatar">L</div>
-                    <div class="user-info">
-                        <div class="username">Lemurovaty</div>
-                        <div class="time">przed chwilą</div>
+            <!-- Główna lista postów -->
+            <div class="feed" id="postFeed">
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="avatar">L</div>
+                        <div class="user-info">
+                            <div class="username">Lemurovaty</div>
+                            <div class="time">przed chwilą</div>
+                        </div>
                     </div>
-                </div>
-                <div class="post-content">
-                    Witaj w testowej wersji LemurNet! Baza danych i logika w Pythonie będą podpięte już wkrótce. 🚀
+                    <div class="post-content">
+                        Wersja responsive działa! Obróć ekran na telefonie, żeby sprawdzić układ dwukolumnowy w poziomie. 📱🔄
+                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Dolny pasek nawigacyjny -->
-        <nav>
-            <a href="#" class="nav-item active">🏠 Home</a>
-            <a href="#" class="nav-item">💬 Czat</a>
-            <a href="#" class="nav-item">👤 Profil</a>
-        </nav>
     </div>
 
     <script>
@@ -218,7 +270,6 @@
 
             const feed = document.getElementById('postFeed');
             
-            // Tworzenie nowej karty posta w DOM
             const newPost = document.createElement('div');
             newPost.className = 'post-card';
             newPost.innerHTML = `
@@ -232,7 +283,6 @@
                 <div class="post-content">${text}</div>
             `;
 
-            // Dodanie posta na górę listy
             feed.insertBefore(newPost, feed.firstChild);
             input.value = '';
         }
