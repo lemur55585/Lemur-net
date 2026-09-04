@@ -71,11 +71,29 @@
             font-weight: 800;
         }
 
-        .theme-btn {
+        .user-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-bar span {
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .theme-btn, .logout-btn {
             background: none;
             border: none;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .logout-btn {
+            font-size: 0.8rem;
+            color: var(--like-color);
+            font-weight: bold;
         }
 
         .tab-content {
@@ -87,6 +105,48 @@
 
         .tab-content.active {
             display: flex;
+        }
+
+        /* Modal Auth (Logowanie / Rejestracja) */
+        .auth-box {
+            padding: 16px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .auth-box input {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .auth-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .auth-btn {
+            flex: 1;
+            background-color: var(--accent-color);
+            color: #0284c7;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .auth-btn.secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
         }
 
         /* Tworzenie wpisu */
@@ -345,18 +405,33 @@
     <div class="app-container">
         <header>
             <h1>LemurNet</h1>
-            <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+            <div class="user-bar">
+                <span id="userDisplay">Gość</span>
+                <button class="logout-btn" id="logoutBtn" style="display:none;" onclick="logout()">Wyloguj</button>
+                <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+            </div>
         </header>
+
+        <!-- PANEL LOGOWANIA / REJESTRACJI -->
+        <div class="auth-box" id="authBox">
+            <h3 style="font-size: 0.95rem; color: var(--accent-color);">Zaloguj się lub zarejestruj</h3>
+            <input type="text" id="usernameInput" placeholder="Login / Nick">
+            <input type="password" id="passwordInput" placeholder="Hasło">
+            <div class="auth-btns">
+                <button class="auth-btn" onclick="login()">Zaloguj</button>
+                <button class="auth-btn secondary" onclick="register()">Zarejestruj</button>
+            </div>
+        </div>
 
         <!-- ZAKŁADKA HOME -->
         <div id="homeTab" class="tab-content active">
             <div class="create-post">
-                <textarea id="postInput" placeholder="Co tam słychać?"></textarea>
+                <textarea id="postInput" placeholder="Zaloguj się, aby napisać wpis..." disabled></textarea>
                 <img id="imagePreview" alt="Podgląd">
                 <div class="post-actions">
                     <label for="imageInput" class="file-label">📷 Dodaj zdjęcie</label>
-                    <input type="file" id="imageInput" accept="image/*" onchange="previewFile()">
-                    <button class="post-btn" onclick="addPost()">Opublikuj</button>
+                    <input type="file" id="imageInput" accept="image/*" onchange="previewFile()" disabled>
+                    <button class="post-btn" id="postPublishBtn" onclick="addPost()" disabled>Opublikuj</button>
                 </div>
             </div>
 
@@ -369,7 +444,7 @@
                             <div class="time">przed chwilą</div>
                         </div>
                     </div>
-                    <div class="post-content">Witaj w LemurNet! Kod jest gotowy, możesz testować dodawanie wpisów, obrazków i czat ze SpaceBotem. 🚀</div>
+                    <div class="post-content">Witaj w LemurNet! Rejestracja i logowanie są aktywne. Zaloguj się, aby napisać post i móc rozmawiać na czacie! 🚀</div>
                     <div class="post-footer">
                         <button class="action-btn" onclick="toggleLike(this)">❤️ <span>0</span></button>
                         <button class="action-btn" onclick="toggleComments(this)">💬 Komentarze (<span>0</span>)</button>
@@ -389,11 +464,11 @@
         <div id="chatTab" class="tab-content">
             <div class="chat-container">
                 <div class="chat-messages" id="chatMsgs">
-                    <div class="msg received"><b>SpaceBot:</b> Siemanko! Jestem podpięty pod czat. Napisz coś!</div>
+                    <div class="msg received"><b>SpaceBot:</b> Siemanko! Jestem podpięty pod czat. Zaloguj się i napisz coś!</div>
                 </div>
                 <div class="chat-input-box">
-                    <input type="text" id="chatInput" placeholder="Napisz wiadomość...">
-                    <button class="post-btn" onclick="sendMsg()">Wyślij</button>
+                    <input type="text" id="chatInput" placeholder="Zaloguj się, aby pisać..." disabled>
+                    <button class="post-btn" id="chatSendBtn" onclick="sendMsg()" disabled>Wyślij</button>
                 </div>
             </div>
         </div>
@@ -401,9 +476,9 @@
         <!-- ZAKŁADKA PROFIL -->
         <div id="profileTab" class="tab-content">
             <div class="profile-box">
-                <div class="avatar" style="width: 70px; height: 70px; margin: 0 auto 10px; font-size: 1.5rem;">L</div>
-                <h2>Lemurovaty</h2>
-                <p style="color: var(--text-muted); margin-top: 4px;">Developer LemurNet</p>
+                <div class="avatar" id="profileAvatar" style="width: 70px; height: 70px; margin: 0 auto 10px; font-size: 1.5rem;">G</div>
+                <h2 id="profileName">Gość</h2>
+                <p style="color: var(--text-muted); margin-top: 4px;" id="profileRole">Konto niezalogowane</p>
                 
                 <h3 style="margin-top: 25px; text-align: left; font-size: 1rem; color: var(--accent-color);">Twoje Domeny:</h3>
                 <div class="domain-list">
@@ -425,139 +500,96 @@
 
     <script>
         let selectedImageData = null;
+        let currentUser = null;
 
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
+        // Inicjalizacja przy starcie
+        window.onload = function() {
+            const savedUser = localStorage.getItem('lemur_session');
+            if (savedUser) {
+                currentUser = savedUser;
+                updateUserUI();
+            }
+        };
+
+        // Rejestracja konta
+        function register() {
+            const user = document.getElementById('usernameInput').value.trim();
+            const pass = document.getElementById('passwordInput').value.trim();
+
+            if (!user || !pass) {
+                alert('Podaj nick i hasło!');
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('lemur_users') || '{}');
+            if (users[user]) {
+                alert('Taki użytkownik już istnieje!');
+                return;
+            }
+
+            users[user] = pass;
+            localStorage.setItem('lemur_users', JSON.stringify(users));
+            currentUser = user;
+            localStorage.setItem('lemur_session', user);
+            
+            alert('Konto utworzone i zalogowane!');
+            updateUserUI();
         }
 
-        function toggleTheme() {
-            const body = document.body;
-            if (body.getAttribute('data-theme') === 'light') {
-                body.removeAttribute('data-theme');
+        // Logowanie
+        function login() {
+            const user = document.getElementById('usernameInput').value.trim();
+            const pass = document.getElementById('passwordInput').value.trim();
+
+            let users = JSON.parse(localStorage.getItem('lemur_users') || '{}');
+            
+            if (users[user] && users[user] === pass) {
+                currentUser = user;
+                localStorage.setItem('lemur_session', user);
+                updateUserUI();
             } else {
-                body.setAttribute('data-theme', 'light');
+                alert('Błędny nick lub hasło!');
             }
         }
 
-        function previewFile() {
-            const file = document.getElementById('imageInput').files[0];
-            const preview = document.getElementById('imagePreview');
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    selectedImageData = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
+        // Wylogowanie
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('lemur_session');
+            updateUserUI();
         }
 
-        function addPost() {
-            const input = document.getElementById('postInput');
-            const text = input.value.trim();
-            if (text === '' && !selectedImageData) return;
+        // Aktualizacja interfejsu po zalogowaniu / wylogowaniu
+        function updateUserUI() {
+            const authBox = document.getElementById('authBox');
+            const userDisplay = document.getElementById('userDisplay');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const postInput = document.getElementById('postInput');
+            const postPublishBtn = document.getElementById('postPublishBtn');
+            const imageInput = document.getElementById('imageInput');
+            const chatInput = document.getElementById('chatInput');
+            const chatSendBtn = document.getElementById('chatSendBtn');
 
-            const feed = document.getElementById('postFeed');
-            const newPost = document.createElement('div');
-            newPost.className = 'post-card';
-            let imgHTML = selectedImageData ? `<img src="${selectedImageData}" class="post-img">` : '';
+            const profileName = document.getElementById('profileName');
+            const profileRole = document.getElementById('profileRole');
+            const profileAvatar = document.getElementById('profileAvatar');
 
-            newPost.innerHTML = `
-                <div class="post-header">
-                    <div class="avatar">TY</div>
-                    <div class="user-info">
-                        <div class="username">Ty</div>
-                        <div class="time">przed chwilą</div>
-                    </div>
-                </div>
-                <div class="post-content">${text}</div>
-                ${imgHTML}
-                <div class="post-footer">
-                    <button class="action-btn" onclick="toggleLike(this)">❤️ <span>0</span></button>
-                    <button class="action-btn" onclick="toggleComments(this)">💬 Komentarze (<span>0</span>)</button>
-                </div>
-                <div class="comments-section">
-                    <div class="comments-list"></div>
-                    <div class="comment-input-box">
-                        <input type="text" placeholder="Napisz komentarz...">
-                        <button class="post-btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick="addComment(this)">Dodaj</button>
-                    </div>
-                </div>
-            `;
+            if (currentUser) {
+                authBox.style.display = 'none';
+                userDisplay.innerText = currentUser;
+                logoutBtn.style.display = 'inline-block';
 
-            feed.insertBefore(newPost, feed.firstChild);
-            input.value = '';
-            document.getElementById('imageInput').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
-            selectedImageData = null;
-        }
+                postInput.disabled = false;
+                postInput.placeholder = `Co tam u Ciebie, ${currentUser}?`;
+                postPublishBtn.disabled = false;
+                imageInput.disabled = false;
 
-        function toggleLike(btn) {
-            const countSpan = btn.querySelector('span');
-            let count = parseInt(countSpan.innerText);
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                countSpan.innerText = count - 1;
+                chatInput.disabled = false;
+                chatInput.placeholder = 'Napisz wiadomość...';
+                chatSendBtn.disabled = false;
+
+                profileName.innerText = currentUser;
+                profileRole.innerText = 'Zalogowany użytkownik LemurNet';
+                profileAvatar.innerText = currentUser.charAt(0).toUpperCase();
             } else {
-                btn.classList.add('liked');
-                countSpan.innerText = count + 1;
-            }
-        }
-
-        function toggleComments(btn) {
-            const postCard = btn.closest('.post-card');
-            const commentSec = postCard.querySelector('.comments-section');
-            commentSec.style.display = commentSec.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function addComment(btn) {
-            const box = btn.closest('.comment-input-box');
-            const input = box.querySelector('input');
-            const text = input.value.trim();
-            if (text === '') return;
-
-            const list = btn.closest('.comments-section').querySelector('.comments-list');
-            const newCmt = document.createElement('div');
-            newCmt.className = 'comment-item';
-            newCmt.innerHTML = `<b>Ty:</b> ${text}`;
-            list.appendChild(newCmt);
-
-            const countSpan = btn.closest('.post-card').querySelector('.post-footer .action-btn:nth-child(2) span');
-            countSpan.innerText = parseInt(countSpan.innerText) + 1;
-            input.value = '';
-        }
-
-        function sendMsg() {
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (text === '') return;
-
-            const msgs = document.getElementById('chatMsgs');
-            const userMsg = document.createElement('div');
-            userMsg.className = 'msg sent';
-            userMsg.innerText = text;
-            msgs.appendChild(userMsg);
-
-            input.value = '';
-            msgs.scrollTop = msgs.scrollHeight;
-
-            setTimeout(() => {
-                const botMsg = document.createElement('div');
-                botMsg.className = 'msg received';
-                const resps = [
-                    "Baza danych działa stabilnie!",
-                    "Post dodany i zapisany w LemurNet.",
-                    "Szwagiery.pl i reszta domen śmigają!"
-                ];
-                botMsg.innerHTML = `<b>SpaceBot:</b> ${resps[Math.floor(Math.random() * resps.length)]}`;
-                msgs.appendChild(botMsg);
-                msgs.scrollTop = msgs.scrollHeight;
-            }, 800);
-        }
-    </script>
-</body>
-</html>
+                
