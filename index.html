@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LemurNet</title>
     <style>
         :root {
@@ -12,6 +12,7 @@
             --text-color: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #334155;
+            --like-color: #ef4444;
         }
 
         * {
@@ -19,6 +20,7 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -27,9 +29,9 @@
             display: flex;
             justify-content: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Domyślny kontener na pion (telefon) */
         .app-container {
             width: 100%;
             max-width: 480px;
@@ -40,11 +42,10 @@
             border-left: 1px solid var(--border-color);
             border-right: 1px solid var(--border-color);
             position: relative;
-            transition: all 0.3s ease;
         }
 
         header {
-            padding: 16px;
+            padding: 14px 16px;
             background-color: var(--card-bg);
             border-bottom: 1px solid var(--border-color);
             display: flex;
@@ -52,7 +53,7 @@
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 100;
         }
 
         header h1 {
@@ -61,21 +62,28 @@
             font-weight: 800;
         }
 
-        .main-content {
-            display: flex;
-            flex-direction: column;
+        /* Sekcje stron (Home, Czat, Profil) */
+        .tab-content {
+            display: none;
             flex: 1;
+            flex-direction: column;
+            padding-bottom: 70px;
         }
 
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* Formularz wpisu */
         .create-post {
-            padding: 16px;
+            padding: 14px;
             background-color: var(--card-bg);
             border-bottom: 1px solid var(--border-color);
         }
 
         textarea {
             width: 100%;
-            height: 70px;
+            height: 65px;
             background-color: var(--bg-color);
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -83,14 +91,30 @@
             padding: 10px;
             resize: none;
             outline: none;
+            font-size: 0.95rem;
         }
 
-        textarea:focus {
-            border-color: var(--accent-color);
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .file-label {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            cursor: pointer;
+            padding: 6px 10px;
+            background-color: rgba(56, 189, 248, 0.1);
+            border-radius: 6px;
+        }
+
+        #imageInput {
+            display: none;
         }
 
         .post-btn {
-            margin-top: 8px;
             background-color: var(--accent-color);
             color: #0284c7;
             border: none;
@@ -98,18 +122,24 @@
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-            float: right;
         }
 
+        #imagePreview {
+            max-height: 100px;
+            border-radius: 6px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        /* Feed */
         .feed {
-            flex: 1;
-            padding: 12px 16px 80px 16px;
+            padding: 12px 14px;
         }
 
         .post-card {
             background-color: var(--card-bg);
             border-radius: 12px;
-            padding: 16px;
+            padding: 14px;
             margin-bottom: 12px;
             border: 1px solid var(--border-color);
         }
@@ -146,9 +176,96 @@
         .post-content {
             font-size: 0.95rem;
             line-height: 1.4;
+            margin-bottom: 8px;
         }
 
-        /* Dolny pasek nawigacji dla pionu */
+        .post-img {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 8px;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .post-footer {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .like-btn.liked {
+            color: var(--like-color);
+        }
+
+        /* Czat */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 130px);
+            padding: 14px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .msg {
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 80%;
+            font-size: 0.9rem;
+        }
+
+        .msg.received {
+            background-color: var(--card-bg);
+            align-self: flex-start;
+        }
+
+        .msg.sent {
+            background-color: var(--accent-color);
+            color: #0f172a;
+            font-weight: 500;
+            align-self: flex-end;
+        }
+
+        .chat-input-box {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input-box input {
+            flex: 1;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px;
+            color: var(--text-color);
+            outline: none;
+        }
+
+        /* Profil */
+        .profile-box {
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Nawigacja Dolna */
         nav {
             position: fixed;
             bottom: 0;
@@ -158,66 +275,55 @@
             border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
-            z-index: 10;
+            padding: 10px 0;
+            z-index: 100;
         }
 
-        .nav-item {
+        .nav-btn {
+            background: none;
+            border: none;
             color: var(--text-muted);
-            text-decoration: none;
             font-size: 0.85rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 4px;
+            cursor: pointer;
         }
 
-        .nav-item.active {
+        .nav-btn.active {
             color: var(--accent-color);
         }
 
-        /* ========================================================== */
-        /* TRYB POZIOMY / EKRANY KRAJOBRAZOWE (ORIENTACJA POZIOMA)     */
-        /* ========================================================== */
+        /* TRYB POZIOMY (LANDSCAPE) */
         @media (min-width: 768px) or (orientation: landscape) and (max-height: 500px) {
             .app-container {
-                max-width: 900px;
-                border: 1px solid var(--border-color);
-                border-top: none;
+                max-width: 850px;
             }
 
-            .main-content {
+            .tab-content#homeTab.active {
                 flex-direction: row;
             }
 
-            /* Lewa kolumna: Formularz dodawania */
             .create-post {
                 width: 320px;
                 border-right: 1px solid var(--border-color);
                 border-bottom: none;
-                position: sticky;
-                top: 57px;
-                height: fit-content;
             }
 
-            /* Prawa kolumna: Feed z wpisami */
             .feed {
-                padding-bottom: 24px;
+                flex: 1;
+                overflow-y: auto;
             }
 
-            /* Ukrywamy dolną nawigację w poziomie, przenosimy menu na nagłówek */
             nav {
                 position: static;
+                max-width: none;
                 width: auto;
-                background-color: transparent;
+                background: transparent;
                 border: none;
                 padding: 0;
-                gap: 20px;
-            }
-
-            .nav-item {
-                flex-direction: row;
-                font-size: 0.95rem;
+                gap: 15px;
             }
         }
     </style>
@@ -227,23 +333,21 @@
     <div class="app-container">
         <header>
             <h1>LemurNet</h1>
-            <!-- W trybie poziomym nawigacja przechodzi do nagłówka -->
-            <nav id="navbar">
-                <a href="#" class="nav-item active">🏠 <span>Home</span></a>
-                <a href="#" class="nav-item">💬 <span>Czat</span></a>
-                <a href="#" class="nav-item">👤 <span>Profil</span></a>
-            </nav>
+            <nav id="topNav"></nav>
         </header>
 
-        <div class="main-content">
-            <!-- Tworzenie posta (po lewej w poziomie, na górze w pionie) -->
+        <!-- ZAKŁADKA HOME -->
+        <div id="homeTab" class="tab-content active">
             <div class="create-post">
                 <textarea id="postInput" placeholder="Co tam słychać w LemurNet?"></textarea>
-                <button class="post-btn" onclick="addPost()">Opublikuj</button>
-                <div style="clear: both;"></div>
+                <img id="imagePreview" alt="Podgląd">
+                <div class="post-actions">
+                    <label for="imageInput" class="file-label">📷 Dodaj zdjęcie</label>
+                    <input type="file" id="imageInput" accept="image/*" onchange="previewFile()">
+                    <button class="post-btn" onclick="addPost()">Opublikuj</button>
+                </div>
             </div>
 
-            <!-- Główna lista postów -->
             <div class="feed" id="postFeed">
                 <div class="post-card">
                     <div class="post-header">
@@ -253,25 +357,86 @@
                             <div class="time">przed chwilą</div>
                         </div>
                     </div>
-                    <div class="post-content">
-                        Wersja responsive działa! Obróć ekran na telefonie, żeby sprawdzić układ dwukolumnowy w poziomie. 📱🔄
+                    <div class="post-content">Witaj w oficjalnej wersji LemurNet v0.2! Możesz dodawać zdjęcia i przełączać się na Czat. 🚀</div>
+                    <div class="post-footer">
+                        <button class="like-btn" onclick="toggleLike(this)">❤️ <span>0</span></button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- ZAKŁADKA CZAT -->
+        <div id="chatTab" class="tab-content">
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMsgs">
+                    <div class="msg received"><b>SpaceBot:</b> Cześć! Jestem gotowy do pomocy na czacie.</div>
+                </div>
+                <div class="chat-input-box">
+                    <input type="text" id="chatInput" placeholder="Napisz wiadomość...">
+                    <button class="post-btn" onclick="sendMsg()">Wyślij</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ZAKŁADKA PROFIL -->
+        <div id="profileTab" class="tab-content">
+            <div class="profile-box">
+                <div class="avatar" style="width: 70px; height: 70px; margin: 0 auto 10px; font-size: 1.5rem;">L</div>
+                <h2>Lemurovaty</h2>
+                <p style="color: var(--text-muted); margin-top: 5px;">Rola: IGL / Founder LemurNet</p>
+                <p style="color: var(--accent-color); margin-top: 15px;">Domeny: lemur-net.pl | 55585.pl</p>
+            </div>
+        </div>
+
+        <!-- DOLNA NAWIGACJA MOBILNA -->
+        <nav id="bottomNav">
+            <button class="nav-btn active" onclick="switchTab('homeTab', this)">🏠 <span>Home</span></button>
+            <button class="nav-btn" onclick="switchTab('chatTab', this)">💬 <span>Czat</span></button>
+            <button class="nav-btn" onclick="switchTab('profileTab', this)">👤 <span>Profil</span></button>
+        </nav>
     </div>
 
     <script>
+        let selectedImageData = null;
+
+        // Przełączanie zakładek
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // Podgląd wybranego pliku
+        function previewFile() {
+            const file = document.getElementById('imageInput').files[0];
+            const preview = document.getElementById('imagePreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    selectedImageData = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Dodawanie wpisu
         function addPost() {
             const input = document.getElementById('postInput');
             const text = input.value.trim();
 
-            if (text === '') return;
+            if (text === '' && !selectedImageData) return;
 
             const feed = document.getElementById('postFeed');
-            
             const newPost = document.createElement('div');
             newPost.className = 'post-card';
+            
+            let imgHTML = selectedImageData ? `<img src="${selectedImageData}" class="post-img">` : '';
+
             newPost.innerHTML = `
                 <div class="post-header">
                     <div class="avatar">TY</div>
@@ -281,10 +446,49 @@
                     </div>
                 </div>
                 <div class="post-content">${text}</div>
+                ${imgHTML}
+                <div class="post-footer">
+                    <button class="like-btn" onclick="toggleLike(this)">❤️ <span>0</span></button>
+                </div>
             `;
 
             feed.insertBefore(newPost, feed.firstChild);
+
+            // Czyszczenie formularza
             input.value = '';
+            document.getElementById('imageInput').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            selectedImageData = null;
+        }
+
+        // Lajkowanie
+        function toggleLike(btn) {
+            const countSpan = btn.querySelector('span');
+            let count = parseInt(countSpan.innerText);
+
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                countSpan.innerText = count - 1;
+            } else {
+                btn.classList.add('liked');
+                countSpan.innerText = count + 1;
+            }
+        }
+
+        // Wysyłanie wiadomości na czacie
+        function sendMsg() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (text === '') return;
+
+            const msgs = document.getElementById('chatMsgs');
+            const newMsg = document.createElement('div');
+            newMsg.className = 'msg sent';
+            newMsg.innerText = text;
+            msgs.appendChild(newMsg);
+
+            input.value = '';
+            msgs.scrollTop = msgs.scrollHeight;
         }
     </script>
 </body>
