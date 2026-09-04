@@ -62,7 +62,6 @@
             font-weight: 800;
         }
 
-        /* Sekcje stron (Home, Czat, Profil) */
         .tab-content {
             display: none;
             flex: 1;
@@ -74,7 +73,7 @@
             display: flex;
         }
 
-        /* Formularz wpisu */
+        /* Posty i Tworzenie */
         .create-post {
             padding: 14px;
             background-color: var(--card-bg);
@@ -110,9 +109,7 @@
             border-radius: 6px;
         }
 
-        #imageInput {
-            display: none;
-        }
+        #imageInput { display: none; }
 
         .post-btn {
             background-color: var(--accent-color);
@@ -131,10 +128,7 @@
             display: none;
         }
 
-        /* Feed */
-        .feed {
-            padding: 12px 14px;
-        }
+        .feed { padding: 12px 14px; }
 
         .post-card {
             background-color: var(--card-bg);
@@ -163,21 +157,9 @@
             margin-right: 10px;
         }
 
-        .user-info .username {
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .user-info .time {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .post-content {
-            font-size: 0.95rem;
-            line-height: 1.4;
-            margin-bottom: 8px;
-        }
+        .user-info .username { font-weight: bold; font-size: 0.9rem; }
+        .user-info .time { font-size: 0.75rem; color: var(--text-muted); }
+        .post-content { font-size: 0.95rem; line-height: 1.4; margin-bottom: 8px; }
 
         .post-img {
             width: 100%;
@@ -188,12 +170,14 @@
         }
 
         .post-footer {
-            margin-top: 8px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color);
             display: flex;
-            align-items: center;
+            gap: 15px;
         }
 
-        .like-btn {
+        .action-btn {
             background: none;
             border: none;
             color: var(--text-muted);
@@ -204,8 +188,39 @@
             gap: 4px;
         }
 
-        .like-btn.liked {
-            color: var(--like-color);
+        .action-btn.liked { color: var(--like-color); }
+
+        /* Komentarze */
+        .comments-section {
+            display: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            background-color: #0f172a;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .comment-item {
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .comment-input-box {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .comment-input-box input {
+            flex: 1;
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
 
         /* Czat */
@@ -232,23 +247,10 @@
             font-size: 0.9rem;
         }
 
-        .msg.received {
-            background-color: var(--card-bg);
-            align-self: flex-start;
-        }
+        .msg.received { background-color: var(--card-bg); align-self: flex-start; }
+        .msg.sent { background-color: var(--accent-color); color: #0f172a; font-weight: 500; align-self: flex-end; }
 
-        .msg.sent {
-            background-color: var(--accent-color);
-            color: #0f172a;
-            font-weight: 500;
-            align-self: flex-end;
-        }
-
-        .chat-input-box {
-            display: flex;
-            gap: 8px;
-        }
-
+        .chat-input-box { display: flex; gap: 8px; }
         .chat-input-box input {
             flex: 1;
             background-color: var(--card-bg);
@@ -259,13 +261,26 @@
             outline: none;
         }
 
-        /* Profil */
-        .profile-box {
-            padding: 20px;
-            text-align: center;
+        /* Profil i Domeny */
+        .profile-box { padding: 20px; text-align: center; }
+        .domain-list {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        /* Nawigacja Dolna */
+        .domain-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Nawigacja */
         nav {
             position: fixed;
             bottom: 0;
@@ -291,40 +306,14 @@
             cursor: pointer;
         }
 
-        .nav-btn.active {
-            color: var(--accent-color);
-        }
+        .nav-btn.active { color: var(--accent-color); }
 
-        /* TRYB POZIOMY (LANDSCAPE) */
         @media (min-width: 768px) or (orientation: landscape) and (max-height: 500px) {
-            .app-container {
-                max-width: 850px;
-            }
-
-            .tab-content#homeTab.active {
-                flex-direction: row;
-            }
-
-            .create-post {
-                width: 320px;
-                border-right: 1px solid var(--border-color);
-                border-bottom: none;
-            }
-
-            .feed {
-                flex: 1;
-                overflow-y: auto;
-            }
-
-            nav {
-                position: static;
-                max-width: none;
-                width: auto;
-                background: transparent;
-                border: none;
-                padding: 0;
-                gap: 15px;
-            }
+            .app-container { max-width: 850px; }
+            .tab-content#homeTab.active { flex-direction: row; }
+            .create-post { width: 320px; border-right: 1px solid var(--border-color); border-bottom: none; }
+            .feed { flex: 1; overflow-y: auto; }
+            nav { position: static; max-width: none; width: auto; background: transparent; border: none; padding: 0; gap: 15px; }
         }
     </style>
 </head>
@@ -332,17 +321,17 @@
 
     <div class="app-container">
         <header>
-            <h1>LemurNet</h1>
-            <nav id="topNav"></nav>
+            <h1 id="appTitle">LemurNet</h1>
+            <span style="font-size: 0.75rem; color: var(--accent-color); background: rgba(56, 189, 248, 0.1); padding: 4px 8px; border-radius: 12px;">v0.3 Beta</span>
         </header>
 
-        <!-- ZAKŁADKA HOME -->
+        <!-- HOME TAB -->
         <div id="homeTab" class="tab-content active">
             <div class="create-post">
-                <textarea id="postInput" placeholder="Co tam słychać w LemurNet?"></textarea>
+                <textarea id="postInput" placeholder="Co tam słychać w sieci Lemura?"></textarea>
                 <img id="imagePreview" alt="Podgląd">
                 <div class="post-actions">
-                    <label for="imageInput" class="file-label">📷 Dodaj zdjęcie</label>
+                    <label for="imageInput" class="file-label">📷 Fotka</label>
                     <input type="file" id="imageInput" accept="image/*" onchange="previewFile()">
                     <button class="post-btn" onclick="addPost()">Opublikuj</button>
                 </div>
@@ -357,62 +346,91 @@
                             <div class="time">przed chwilą</div>
                         </div>
                     </div>
-                    <div class="post-content">Witaj w oficjalnej wersji LemurNet v0.2! Możesz dodawać zdjęcia i przełączać się na Czat. 🚀</div>
+                    <div class="post-content">Ekosystem domeny gotowy! Podpięte szwagiery.pl i lemurhost.pl. Testujmy komentarze i AI na czacie. 🚀</div>
                     <div class="post-footer">
-                        <button class="like-btn" onclick="toggleLike(this)">❤️ <span>0</span></button>
+                        <button class="action-btn" onclick="toggleLike(this)">❤️ <span>0</span></button>
+                        <button class="action-btn" onclick="toggleComments(this)">💬 Komentarze (<span>1</span>)</button>
+                    </div>
+                    <div class="comments-section">
+                        <div class="comments-list">
+                            <div class="comment-item"><b>Szymon:</b> Wygląda sztos!</div>
+                        </div>
+                        <div class="comment-input-box">
+                            <input type="text" placeholder="Napisz komentarz...">
+                            <button class="post-btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick="addComment(this)">Dodaj</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ZAKŁADKA CZAT -->
+        <!-- CZAT TAB -->
         <div id="chatTab" class="tab-content">
             <div class="chat-container">
                 <div class="chat-messages" id="chatMsgs">
-                    <div class="msg received"><b>SpaceBot:</b> Cześć! Jestem gotowy do pomocy na czacie.</div>
+                    <div class="msg received"><b>SpaceBot:</b> Siemanko Lemurovaty! Jestem podpięty pod czat. Napisz coś, a odpowiem!</div>
                 </div>
                 <div class="chat-input-box">
-                    <input type="text" id="chatInput" placeholder="Napisz wiadomość...">
+                    <input type="text" id="chatInput" placeholder="Napisz do SpaceBota...">
                     <button class="post-btn" onclick="sendMsg()">Wyślij</button>
                 </div>
             </div>
         </div>
 
-        <!-- ZAKŁADKA PROFIL -->
+        <!-- PROFIL TAB -->
         <div id="profileTab" class="tab-content">
             <div class="profile-box">
                 <div class="avatar" style="width: 70px; height: 70px; margin: 0 auto 10px; font-size: 1.5rem;">L</div>
                 <h2>Lemurovaty</h2>
-                <p style="color: var(--text-muted); margin-top: 5px;">Rola: IGL / Founder LemurNet</p>
-                <p style="color: var(--accent-color); margin-top: 15px;">Domeny: lemur-net.pl | 55585.pl</p>
+                <p style="color: var(--text-muted); margin-top: 4px;">IGL / Founder & Developer</p>
+                
+                <h3 style="margin-top: 25px; text-align: left; font-size: 1rem; color: var(--accent-color);">Twoje Domeny & Projekty:</h3>
+                <div class="domain-list">
+                    <div class="domain-card">
+                        <span>🌐 lemur-net.pl</span>
+                        <span style="color: #4ade80; font-size: 0.8rem;">Główna Apka</span>
+                    </div>
+                    <div class="domain-card">
+                        <span>🚀 spacebot.pl / ai</span>
+                        <span style="color: #38bdf8; font-size: 0.8rem;">Asystent AI</span>
+                    </div>
+                    <div class="domain-card">
+                        <span>💻 lemurhost.pl</span>
+                        <span style="color: #facc15; font-size: 0.8rem;">Hosting VPS</span>
+                    </div>
+                    <div class="domain-card">
+                        <span>🔥 szwagiery.pl</span>
+                        <span style="color: #f43f5e; font-size: 0.8rem;">Projekt Ekstra</span>
+                    </div>
+                    <div class="domain-card">
+                        <span>🎮 55585.pl</span>
+                        <span style="color: #a855f7; font-size: 0.8rem;">Roblox/Gaming</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- DOLNA NAWIGACJA MOBILNA -->
+        <!-- NAWIGACJA -->
         <nav id="bottomNav">
             <button class="nav-btn active" onclick="switchTab('homeTab', this)">🏠 <span>Home</span></button>
-            <button class="nav-btn" onclick="switchTab('chatTab', this)">💬 <span>Czat</span></button>
-            <button class="nav-btn" onclick="switchTab('profileTab', this)">👤 <span>Profil</span></button>
+            <button class="nav-btn" onclick="switchTab('chatTab', this)">💬 <span>Czat AI</span></button>
+            <button class="nav-btn" onclick="switchTab('profileTab', this)">👤 <span>Ekosystem</span></button>
         </nav>
     </div>
 
     <script>
         let selectedImageData = null;
 
-        // Przełączanie zakładek
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
         }
 
-        // Podgląd wybranego pliku
         function previewFile() {
             const file = document.getElementById('imageInput').files[0];
             const preview = document.getElementById('imagePreview');
-            
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -424,17 +442,14 @@
             }
         }
 
-        // Dodawanie wpisu
         function addPost() {
             const input = document.getElementById('postInput');
             const text = input.value.trim();
-
             if (text === '' && !selectedImageData) return;
 
             const feed = document.getElementById('postFeed');
             const newPost = document.createElement('div');
             newPost.className = 'post-card';
-            
             let imgHTML = selectedImageData ? `<img src="${selectedImageData}" class="post-img">` : '';
 
             newPost.innerHTML = `
@@ -448,24 +463,28 @@
                 <div class="post-content">${text}</div>
                 ${imgHTML}
                 <div class="post-footer">
-                    <button class="like-btn" onclick="toggleLike(this)">❤️ <span>0</span></button>
+                    <button class="action-btn" onclick="toggleLike(this)">❤️ <span>0</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 Komentarze (<span>0</span>)</button>
+                </div>
+                <div class="comments-section">
+                    <div class="comments-list"></div>
+                    <div class="comment-input-box">
+                        <input type="text" placeholder="Napisz komentarz...">
+                        <button class="post-btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick="addComment(this)">Dodaj</button>
+                    </div>
                 </div>
             `;
 
             feed.insertBefore(newPost, feed.firstChild);
-
-            // Czyszczenie formularza
             input.value = '';
             document.getElementById('imageInput').value = '';
             document.getElementById('imagePreview').style.display = 'none';
             selectedImageData = null;
         }
 
-        // Lajkowanie
         function toggleLike(btn) {
             const countSpan = btn.querySelector('span');
             let count = parseInt(countSpan.innerText);
-
             if (btn.classList.contains('liked')) {
                 btn.classList.remove('liked');
                 countSpan.innerText = count - 1;
@@ -475,20 +494,63 @@
             }
         }
 
-        // Wysyłanie wiadomości na czacie
+        function toggleComments(btn) {
+            const postCard = btn.closest('.post-card');
+            const commentSec = postCard.querySelector('.comments-section');
+            commentSec.style.display = commentSec.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function addComment(btn) {
+            const box = btn.closest('.comment-input-box');
+            const input = box.querySelector('input');
+            const text = input.value.trim();
+            if (text === '') return;
+
+            const list = btn.closest('.comments-section').querySelector('.comments-list');
+            const newCmt = document.createElement('div');
+            newCmt.className = 'comment-item';
+            newCmt.innerHTML = `<b>Ty:</b> ${text}`;
+            list.appendChild(newCmt);
+
+            // Aktualizacja licznika
+            const countSpan = btn.closest('.post-card').querySelector('.post-footer .action-btn:nth-child(2) span');
+            countSpan.innerText = parseInt(countSpan.innerText) + 1;
+
+            input.value = '';
+        }
+
+        // Automatyczna odpowiedź SpaceBota na czacie
         function sendMsg() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
             if (text === '') return;
 
             const msgs = document.getElementById('chatMsgs');
-            const newMsg = document.createElement('div');
-            newMsg.className = 'msg sent';
-            newMsg.innerText = text;
-            msgs.appendChild(newMsg);
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg sent';
+            userMsg.innerText = text;
+            msgs.appendChild(userMsg);
 
             input.value = '';
             msgs.scrollTop = msgs.scrollHeight;
+
+            // Odpowiedź bota po 1 sekudzie
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'msg received';
+                
+                const responses = [
+                    "Baza danych na VPS działa stabilnie!",
+                    "Zapisałem to w systemie LemurNet.",
+                    "Szwagiery.pl zaraz będą miały z tego niezły pożytek!",
+                    "Szykuj trio na turniej, a ja pilnuję serwera!"
+                ];
+                const randomResp = responses[Math.floor(Math.random() * responses.length)];
+                
+                botMsg.innerHTML = `<b>SpaceBot:</b> ${randomResp}`;
+                msgs.appendChild(botMsg);
+                msgs.scrollTop = msgs.scrollHeight;
+            }, 1000);
         }
     </script>
 </body>
