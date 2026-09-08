@@ -2,8 +2,8 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LemurNet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemur Net - Wyszukiwarka & DNS</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -12,16 +12,8 @@
             --text-color: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #334155;
-            --like-color: #ef4444;
-        }
-
-        [data-theme="light"] {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --accent-color: #0284c7;
-            --text-color: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #cbd5e1;
+            --dns-color: #4ade80;
+            --error-color: #f87171;
         }
 
         * {
@@ -29,567 +21,256 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            display: flex;
-            justify-content: center;
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            background-color: var(--bg-color);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            border-left: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
-            position: relative;
         }
 
         header {
-            padding: 14px 16px;
+            padding: 14px 24px;
             background-color: var(--card-bg);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        header h1 {
-            font-size: 1.2rem;
-            color: var(--accent-color);
-            font-weight: 800;
-        }
-
-        .user-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-bar span {
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
-
-        .theme-btn, .logout-btn {
-            background: none;
-            border: none;
-            font-size: 1rem;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-
-        .logout-btn {
-            font-size: 0.8rem;
-            color: var(--like-color);
-            font-weight: bold;
-        }
-
-        .tab-content {
-            display: none;
-            flex: 1;
-            flex-direction: column;
-            padding-bottom: 70px;
-        }
-
-        .tab-content.active {
-            display: flex;
-        }
-
-        /* Modal Auth (Logowanie / Rejestracja) */
-        .auth-box {
-            padding: 16px;
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .auth-box input {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .auth-btns {
-            display: flex;
+            flex-wrap: wrap;
             gap: 8px;
         }
 
-        .auth-btn {
-            flex: 1;
-            background-color: var(--accent-color);
-            color: #0284c7;
-            border: none;
-            padding: 8px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .logo { font-size: 1.3rem; font-weight: 900; color: var(--accent-color); text-decoration: none; }
 
-        .auth-btn.secondary {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-        }
-
-        /* Tworzenie wpisu */
-        .create-post {
-            padding: 14px;
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        textarea {
-            width: 100%;
-            height: 70px;
+        .stat-badge {
             background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-color);
-            padding: 10px;
-            resize: none;
-            outline: none;
-            font-size: 0.95rem;
-        }
-
-        .post-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 8px;
-        }
-
-        .file-label {
-            font-size: 0.85rem;
-            color: var(--accent-color);
-            cursor: pointer;
-            padding: 6px 10px;
-            background-color: rgba(56, 189, 248, 0.1);
-            border-radius: 6px;
-            font-weight: bold;
-        }
-
-        #imageInput { display: none; }
-
-        .post-btn {
-            background-color: var(--accent-color);
-            color: #0284c7;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        #imagePreview {
-            max-height: 120px;
-            border-radius: 6px;
-            margin-top: 8px;
-            display: none;
-            width: 100%;
-            object-fit: cover;
-        }
-
-        /* Feed */
-        .feed { padding: 12px 14px; }
-
-        .post-card {
-            background-color: var(--card-bg);
+            padding: 4px 12px;
             border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
             border: 1px solid var(--border-color);
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background-color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #0f172a;
-            margin-right: 10px;
-        }
-
-        .user-info .username { font-weight: bold; font-size: 0.9rem; }
-        .user-info .time { font-size: 0.75rem; color: var(--text-muted); }
-
-        .post-content { font-size: 0.95rem; line-height: 1.4; margin-bottom: 8px; }
-
-        .post-img {
-            width: 100%;
-            border-radius: 8px;
-            margin-top: 8px;
-            max-height: 300px;
-            object-fit: cover;
-        }
-
-        .post-footer {
-            margin-top: 10px;
-            padding-top: 8px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 15px;
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .action-btn.liked { color: var(--like-color); }
-
-        /* Komentarze */
-        .comments-section {
-            display: none;
-            margin-top: 10px;
-            padding-top: 10px;
-            background-color: var(--bg-color);
-            border-radius: 8px;
-            padding: 10px;
-        }
-
-        .comment-item {
-            font-size: 0.85rem;
-            margin-bottom: 6px;
-            padding-bottom: 4px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .comment-input-box {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-        }
-
-        .comment-input-box input {
-            flex: 1;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 6px;
-            border-radius: 4px;
             font-size: 0.8rem;
-            outline: none;
-        }
-
-        /* Czat */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 130px);
-            padding: 14px;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .msg {
-            padding: 8px 12px;
-            border-radius: 8px;
-            max-width: 80%;
-            font-size: 0.9rem;
-        }
-
-        .msg.received { background-color: var(--card-bg); align-self: flex-start; border: 1px solid var(--border-color); }
-        .msg.sent { background-color: var(--accent-color); color: #0f172a; font-weight: 500; align-self: flex-end; }
-
-        .chat-input-box { display: flex; gap: 8px; }
-        .chat-input-box input {
-            flex: 1;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 8px;
-            color: var(--text-color);
-            outline: none;
-        }
-
-        /* Profil i Domeny */
-        .profile-box { padding: 20px; text-align: center; }
-        .domain-list {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .domain-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* Nawigacja */
-        nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 480px;
-            background-color: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 100;
-        }
-
-        .nav-btn {
-            background: none;
-            border: none;
             color: var(--text-muted);
-            font-size: 0.85rem;
+        }
+        .stat-badge strong { color: var(--accent-color); }
+
+        .search-container { max-width: 800px; width: 100%; margin: 30px auto 6px auto; padding: 0 20px; }
+
+        .search-box {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
+            gap: 10px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            padding: 8px 16px;
+        }
+        .search-box:focus-within { border-color: var(--accent-color); }
+
+        .search-input { flex: 1; background: transparent; border: none; outline: none; color: var(--text-color); font-size: 1rem; }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: #0f172a;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
             cursor: pointer;
         }
+        .btn:disabled { opacity: 0.5; cursor: default; }
 
-        .nav-btn.active { color: var(--accent-color); font-weight: bold; }
+        .hint { max-width: 800px; margin: 0 auto; padding: 0 24px; font-size: 0.75rem; color: var(--text-muted); }
 
-        /* RENDER POZIOMY (LANDSCAPE) */
-        @media (min-width: 768px) or (orientation: landscape) and (max-height: 500px) {
-            .app-container { max-width: 850px; }
-            .tab-content#homeTab.active { flex-direction: row; }
-            .create-post { width: 320px; border-right: 1px solid var(--border-color); border-bottom: none; }
-            .feed { flex: 1; overflow-y: auto; }
-            nav { position: static; max-width: none; width: auto; background: transparent; border: none; padding: 0; gap: 15px; }
-        }
+        .results-container { max-width: 800px; width: 100%; margin: 0 auto; padding: 0 20px 40px 20px; display: none; }
+
+        .dns-card { background: rgba(74, 222, 128, 0.08); border: 1px solid var(--dns-color); border-radius: 12px; padding: 16px; margin-bottom: 20px; display: none; }
+        .dns-card.error { border-color: var(--error-color); background: rgba(248, 113, 113, 0.08); }
+        .dns-title { color: var(--dns-color); font-weight: bold; font-size: 0.9rem; margin-bottom: 6px; }
+        .dns-card.error .dns-title { color: var(--error-color); }
+        .dns-ip { font-family: monospace; font-size: 1.2rem; color: #ffffff; }
+
+        .ai-overview { background: var(--card-bg); border: 1px solid var(--accent-color); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+        .ai-header { font-weight: bold; color: var(--accent-color); margin-bottom: 8px; }
+
+        .result-card { margin-bottom: 18px; }
+        .result-url { font-size: 0.8rem; color: var(--text-muted); }
+        .result-title { font-size: 1.1rem; color: var(--accent-color); text-decoration: none; font-weight: 600; }
+        .result-title:hover { text-decoration: underline; }
+        .result-snippet { font-size: 0.9rem; margin-top: 4px; line-height: 1.4; }
+        .result-time { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <header>
-            <h1>LemurNet</h1>
-            <div class="user-bar">
-                <span id="userDisplay">Gość</span>
-                <button class="logout-btn" id="logoutBtn" style="display:none;" onclick="logout()">Wyloguj</button>
-                <button class="theme-btn" onclick="toggleTheme()">🌙</button>
-            </div>
-        </header>
+    <header>
+        <a href="#" class="logo">🔍 Lemur Net</a>
+        <div class="stat-badge">Strony w indeksie: <strong id="pagesCount">Ładowanie...</strong></div>
+    </header>
 
-        <!-- PANEL LOGOWANIA / REJESTRACJI -->
-        <div class="auth-box" id="authBox">
-            <h3 style="font-size: 0.95rem; color: var(--accent-color);">Zaloguj się lub zarejestruj</h3>
-            <input type="text" id="usernameInput" placeholder="Login / Nick">
-            <input type="password" id="passwordInput" placeholder="Hasło">
-            <div class="auth-btns">
-                <button class="auth-btn" onclick="login()">Zaloguj</button>
-                <button class="auth-btn secondary" onclick="register()">Zarejestruj</button>
-            </div>
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="Wpisz domenę (np. lemurhost.pl) lub szukaj w indeksie..." maxlength="200" onkeypress="if(event.key==='Enter') executeSearch()">
+            <button class="btn" id="searchBtn" onclick="executeSearch()">Szukaj</button>
+        </div>
+    </div>
+    <p class="hint">Najpierw przeszukiwana jest lokalna baza (db.json), a następnie sprawdzany jest wpis DNS przez publiczny resolver Cloudflare (1.1.1.1) — to nie jest własna infrastruktura DNS.</p>
+
+    <div class="results-container" id="resultsContainer">
+        <div class="dns-card" id="dnsBox">
+            <div class="dns-title" id="dnsTitle">🌐 DNS Lookup (Cloudflare)</div>
+            <div id="dnsInfo">Tłumaczenie adresu...</div>
         </div>
 
-        <!-- ZAKŁADKA HOME -->
-        <div id="homeTab" class="tab-content active">
-            <div class="create-post">
-                <textarea id="postInput" placeholder="Zaloguj się, aby napisać wpis..." disabled></textarea>
-                <img id="imagePreview" alt="Podgląd">
-                <div class="post-actions">
-                    <label for="imageInput" class="file-label">📷 Dodaj zdjęcie</label>
-                    <input type="file" id="imageInput" accept="image/*" onchange="previewFile()" disabled>
-                    <button class="post-btn" id="postPublishBtn" onclick="addPost()" disabled>Opublikuj</button>
-                </div>
-            </div>
-
-            <div class="feed" id="postFeed">
-                <div class="post-card">
-                    <div class="post-header">
-                        <div class="avatar">L</div>
-                        <div class="user-info">
-                            <div class="username">Lemurovaty</div>
-                            <div class="time">przed chwilą</div>
-                        </div>
-                    </div>
-                    <div class="post-content">Witaj w LemurNet! Rejestracja i logowanie są aktywne. Zaloguj się, aby napisać post i móc rozmawiać na czacie! 🚀</div>
-                    <div class="post-footer">
-                        <button class="action-btn" onclick="toggleLike(this)">❤️ <span>0</span></button>
-                        <button class="action-btn" onclick="toggleComments(this)">💬 Komentarze (<span>0</span>)</button>
-                    </div>
-                    <div class="comments-section">
-                        <div class="comments-list"></div>
-                        <div class="comment-input-box">
-                            <input type="text" placeholder="Napisz komentarz...">
-                            <button class="post-btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick="addComment(this)">Dodaj</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="ai-overview">
+            <div class="ai-header">🤖 Podsumowanie</div>
+            <div class="ai-body" id="aiAnswer">Przetwarzanie zapytania...</div>
         </div>
 
-        <!-- ZAKŁADKA CZAT -->
-        <div id="chatTab" class="tab-content">
-            <div class="chat-container">
-                <div class="chat-messages" id="chatMsgs">
-                    <div class="msg received"><b>SpaceBot:</b> Siemanko! Jestem podpięty pod czat. Zaloguj się i napisz coś!</div>
-                </div>
-                <div class="chat-input-box">
-                    <input type="text" id="chatInput" placeholder="Zaloguj się, aby pisać..." disabled>
-                    <button class="post-btn" id="chatSendBtn" onclick="sendMsg()" disabled>Wyślij</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ZAKŁADKA PROFIL -->
-        <div id="profileTab" class="tab-content">
-            <div class="profile-box">
-                <div class="avatar" id="profileAvatar" style="width: 70px; height: 70px; margin: 0 auto 10px; font-size: 1.5rem;">G</div>
-                <h2 id="profileName">Gość</h2>
-                <p style="color: var(--text-muted); margin-top: 4px;" id="profileRole">Konto niezalogowane</p>
-                
-                <h3 style="margin-top: 25px; text-align: left; font-size: 1rem; color: var(--accent-color);">Twoje Domeny:</h3>
-                <div class="domain-list">
-                    <div class="domain-card"><span>🌐 lemur-net.pl</span><span style="color: #4ade80; font-size: 0.8rem;">Główna Apka</span></div>
-                    <div class="domain-card"><span>💻 lemurhost.pl</span><span style="color: #facc15; font-size: 0.8rem;">Hosting</span></div>
-                    <div class="domain-card"><span>🔥 szwagiery.pl</span><span style="color: #f43f5e; font-size: 0.8rem;">Projekt</span></div>
-                    <div class="domain-card"><span>🎮 55585.pl</span><span style="color: #a855f7; font-size: 0.8rem;">Gaming/DNS</span></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- NAWIGACJA -->
-        <nav id="bottomNav">
-            <button class="nav-btn active" onclick="switchTab('homeTab', this)">🏠 <span>Home</span></button>
-            <button class="nav-btn" onclick="switchTab('chatTab', this)">💬 <span>Czat</span></button>
-            <button class="nav-btn" onclick="switchTab('profileTab', this)">👤 <span>Profil</span></button>
-        </nav>
+        <div id="resultsList"></div>
     </div>
 
     <script>
-        let selectedImageData = null;
-        let currentUser = null;
+        let searchIndex = [];
+        let searchDebounceTimer = null;
 
-        // Inicjalizacja przy starcie
-        window.onload = function() {
-            const savedUser = localStorage.getItem('lemur_session');
-            if (savedUser) {
-                currentUser = savedUser;
-                updateUserUI();
+        // Zapobiega XSS: każdy fragment tekstu pochodzący z bazy lub od użytkownika
+        // trafia do DOM przez textContent, nigdy przez innerHTML z surowym stringiem.
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        async function loadDatabase() {
+            try {
+                // cache-bust: GitHub Pages / przeglądarka potrafią serwować stary plik
+                const res = await fetch('db.json?t=' + Date.now());
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                searchIndex = await res.json();
+                document.getElementById('pagesCount').textContent = searchIndex.length;
+            } catch (err) {
+                document.getElementById('pagesCount').textContent = 'błąd ładowania';
             }
-        };
+        }
+        loadDatabase();
 
-        // Rejestracja konta
-        function register() {
-            const user = document.getElementById('usernameInput').value.trim();
-            const pass = document.getElementById('passwordInput').value.trim();
+        async function resolveDNS(domain) {
+            const dnsBox = document.getElementById('dnsBox');
+            const dnsInfo = document.getElementById('dnsInfo');
+            const dnsTitle = document.getElementById('dnsTitle');
 
-            if (!user || !pass) {
-                alert('Podaj nick i hasło!');
+            let cleanDomain = domain.replace(/(^\w+:|^)\/\//, '').split('/')[0];
+            const domainPattern = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$/i;
+
+            if (!domainPattern.test(cleanDomain)) {
+                dnsBox.style.display = 'none';
                 return;
             }
 
-            let users = JSON.parse(localStorage.getItem('lemur_users') || '{}');
-            if (users[user]) {
-                alert('Taki użytkownik już istnieje!');
-                return;
+            dnsBox.style.display = 'block';
+            dnsBox.classList.remove('error');
+            dnsTitle.textContent = '🌐 DNS Lookup (Cloudflare)';
+            dnsInfo.textContent = 'Tłumaczenie domeny ' + cleanDomain + '...';
+
+            const resolver = 'https://cloudflare-dns.com/dns-query';
+
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 5000);
+                const response = await fetch(`${resolver}?name=${encodeURIComponent(cleanDomain)}&type=A`, {
+                    headers: { 'Accept': 'application/dns-json' },
+                    signal: controller.signal
+                });
+                clearTimeout(timeout);
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                const data = await response.json();
+
+                if (data.Answer && data.Answer.length > 0) {
+                    const ip = data.Answer.find(a => a.type === 1)?.data || data.Answer[0].data;
+                    dnsInfo.innerHTML = '';
+                    dnsInfo.append('Domena: ');
+                    const b1 = document.createElement('b'); b1.textContent = cleanDomain;
+                    dnsInfo.append(b1, ' ➔ IP: ');
+                    const span = document.createElement('span'); span.className = 'dns-ip'; span.textContent = ip;
+                    dnsInfo.append(span);
+                } else {
+                    dnsInfo.textContent = 'Brak rekordu A dla ' + cleanDomain + '.';
+                }
+            } catch (err) {
+                dnsBox.classList.add('error');
+                dnsTitle.textContent = '⚠️ Błąd DNS';
+                dnsInfo.textContent = 'Nie udało się rozwiązać domeny przez Cloudflare DNS (' + (err.name === 'AbortError' ? 'przekroczono czas' : 'błąd sieci') + ').';
+            }
+        }
+
+        async function executeSearch() {
+            const rawQuery = document.getElementById('searchInput').value.trim();
+            if (!rawQuery) return;
+            const query = rawQuery.toLowerCase();
+
+            const container = document.getElementById('resultsContainer');
+            const aiAnswer = document.getElementById('aiAnswer');
+            const resultsList = document.getElementById('resultsList');
+            const searchBtn = document.getElementById('searchBtn');
+
+            searchBtn.disabled = true;
+            container.style.display = 'block';
+
+            // KROK 1: najpierw baza - wynik pojawia się od razu, bez czekania na sieć
+            const results = searchIndex.filter(item =>
+                (item.title || '').toLowerCase().includes(query) ||
+                (item.snippet || '').toLowerCase().includes(query) ||
+                (item.url || '').toLowerCase().includes(query)
+            );
+
+            aiAnswer.textContent = results.length > 0
+                ? `Znaleziono ${results.length} wpis(ów) dla "${rawQuery}". Najlepsze dopasowanie: ${results[0].title}`
+                : `Brak wpisów w indeksie dla "${rawQuery}".`;
+
+            resultsList.innerHTML = '';
+            if (results.length === 0) {
+                const p = document.createElement('p');
+                p.style.color = 'var(--text-muted)';
+                p.style.marginTop = '15px';
+                p.textContent = 'Brak bezpośrednich stron w indeksie.';
+                resultsList.appendChild(p);
             }
 
-            users[user] = pass;
-            localStorage.setItem('lemur_users', JSON.stringify(users));
-            currentUser = user;
-            localStorage.setItem('lemur_session', user);
-            
-            alert('Konto utworzone i zalogowane!');
-            updateUserUI();
-        }
+            for (const r of results) {
+                const card = document.createElement('div');
+                card.className = 'result-card';
 
-        // Logowanie
-        function login() {
-            const user = document.getElementById('usernameInput').value.trim();
-            const pass = document.getElementById('passwordInput').value.trim();
+                const urlDiv = document.createElement('div');
+                urlDiv.className = 'result-url';
+                urlDiv.textContent = r.url;
 
-            let users = JSON.parse(localStorage.getItem('lemur_users') || '{}');
-            
-            if (users[user] && users[user] === pass) {
-                currentUser = user;
-                localStorage.setItem('lemur_session', user);
-                updateUserUI();
-            } else {
-                alert('Błędny nick lub hasło!');
+                const titleLink = document.createElement('a');
+                titleLink.className = 'result-title';
+                titleLink.href = r.url;
+                titleLink.target = '_blank';
+                titleLink.rel = 'noopener noreferrer';
+                titleLink.textContent = r.title;
+
+                const snippetDiv = document.createElement('div');
+                snippetDiv.className = 'result-snippet';
+                snippetDiv.textContent = r.snippet;
+
+                card.append(urlDiv, titleLink, snippetDiv);
+
+                if (r.indexed_at) {
+                    const timeDiv = document.createElement('div');
+                    timeDiv.className = 'result-time';
+                    timeDiv.textContent = 'Zaindeksowano: ' + new Date(r.indexed_at).toLocaleString('pl-PL');
+                    card.appendChild(timeDiv);
+                }
+
+                resultsList.appendChild(card);
             }
+
+            // KROK 2: dopiero teraz DNS (Cloudflare) - nie blokuje wyników z bazy
+            await resolveDNS(rawQuery);
+            searchBtn.disabled = false;
         }
-
-        // Wylogowanie
-        function logout() {
-            currentUser = null;
-            localStorage.removeItem('lemur_session');
-            updateUserUI();
-        }
-
-        // Aktualizacja interfejsu po zalogowaniu / wylogowaniu
-        function updateUserUI() {
-            const authBox = document.getElementById('authBox');
-            const userDisplay = document.getElementById('userDisplay');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const postInput = document.getElementById('postInput');
-            const postPublishBtn = document.getElementById('postPublishBtn');
-            const imageInput = document.getElementById('imageInput');
-            const chatInput = document.getElementById('chatInput');
-            const chatSendBtn = document.getElementById('chatSendBtn');
-
-            const profileName = document.getElementById('profileName');
-            const profileRole = document.getElementById('profileRole');
-            const profileAvatar = document.getElementById('profileAvatar');
-
-            if (currentUser) {
-                authBox.style.display = 'none';
-                userDisplay.innerText = currentUser;
-                logoutBtn.style.display = 'inline-block';
-
-                postInput.disabled = false;
-                postInput.placeholder = `Co tam u Ciebie, ${currentUser}?`;
-                postPublishBtn.disabled = false;
-                imageInput.disabled = false;
-
-                chatInput.disabled = false;
-                chatInput.placeholder = 'Napisz wiadomość...';
-                chatSendBtn.disabled = false;
-
-                profileName.innerText = currentUser;
-                profileRole.innerText = 'Zalogowany użytkownik LemurNet';
-                profileAvatar.innerText = currentUser.charAt(0).toUpperCase();
-            } else {
-                
+    </script>
+</body>
+</html>
