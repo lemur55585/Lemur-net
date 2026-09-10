@@ -1,0 +1,502 @@
+[
+  {
+    "domain": "wp.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "onet.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "interia.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "gazeta.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "money.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "allegro.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "olx.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "ceneo.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "x-kom.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "morele.net",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "empik.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "rmf24.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "tvn24.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "polsatnews.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "se.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "fakt.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "sport.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "gry-online.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "komputerswiat.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "benchmark.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "pudelek.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "plotek.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "wprost.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "newsweek.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "polityka.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "dziennik.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "bankier.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "forsal.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "spidersweb.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "antyweb.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "chip.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "pcworld.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "eurogamer.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "filmweb.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "otomoto.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "gratka.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "pracuj.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "gumtree.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "nk.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "lemurhost.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "55585.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "szwagiery.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "lemurnet.pl",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "google.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "youtube.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "facebook.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "wikipedia.org",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "twitter.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "instagram.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "amazon.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "reddit.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "netflix.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "microsoft.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "apple.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "github.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "stackoverflow.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "linkedin.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "tiktok.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "pinterest.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "ebay.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "cnn.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "bbc.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "nytimes.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "spotify.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "twitch.tv",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "discord.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "whatsapp.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "telegram.org",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "yahoo.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "bing.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "duckduckgo.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "mozilla.org",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "adobe.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "wordpress.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "medium.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "quora.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "imdb.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "dropbox.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "paypal.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "archive.org",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "cloudflare.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "digitalocean.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "heroku.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "vercel.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "npmjs.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "python.org",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "nodejs.org",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "docker.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "kubernetes.io",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "w3.org",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "ietf.org",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "mit.edu",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "harvard.edu",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "stanford.edu",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "nasa.gov",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "who.int",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "un.org",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "weather.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "booking.com",
+    "ip": null,
+    "resolved_at": null
+  },
+  {
+    "domain": "airbnb.com",
+    "ip": null,
+    "resolved_at": null
+  }
+]
