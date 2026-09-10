@@ -93,6 +93,20 @@
         .result-title:hover { text-decoration: underline; }
         .result-snippet { font-size: 0.9rem; margin-top: 4px; line-height: 1.4; }
         .result-time { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { color: var(--text-muted); font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -208,20 +222,30 @@
 
             const container = document.getElementById('resultsContainer');
             const dnsBox = document.getElementById('dnsBox');
+            const resultsList = document.getElementById('resultsList');
+            const searchBtn = document.getElementById('searchBtn');
+
             container.style.display = 'block';
             dnsBox.style.display = 'none';
+            searchBtn.disabled = true;
 
-            if (isBareDomain(rawQuery)) {
-                showDnsLookup(rawQuery.toLowerCase());
-            }
+            resultsList.innerHTML = '<span class="spinner"></span><span class="loading-text">Szukam...</span>';
 
-            const query = rawQuery.toLowerCase();
-            const results = searchIndex.filter(item =>
-                (item.title || '').toLowerCase().includes(query) ||
-                (item.snippet || '').toLowerCase().includes(query) ||
-                (item.url || '').toLowerCase().includes(query)
-            );
-            renderResults(results);
+            const delay = 350 + Math.random() * 450; // 350-800ms, wygląda naturalnie
+            setTimeout(() => {
+                if (isBareDomain(rawQuery)) {
+                    showDnsLookup(rawQuery.toLowerCase());
+                }
+
+                const query = rawQuery.toLowerCase();
+                const results = searchIndex.filter(item =>
+                    (item.title || '').toLowerCase().includes(query) ||
+                    (item.snippet || '').toLowerCase().includes(query) ||
+                    (item.url || '').toLowerCase().includes(query)
+                );
+                renderResults(results);
+                searchBtn.disabled = false;
+            }, delay);
         }
     </script>
 </body>
